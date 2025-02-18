@@ -4,11 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="909218aa-174d-4aba-928f-335b006cbe23" name="Changes" comment="init">
-      <change afterPath="$PROJECT_DIR$/src/cli/ProductManagerCLI.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/services/ProductManager.java" afterDir="false" />
+    <list default="true" id="909218aa-174d-4aba-928f-335b006cbe23" name="Changes" comment="task-2">
+      <change afterPath="$PROJECT_DIR$/src/models/Cart.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/models/Product.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/Product.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Test.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Test.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
