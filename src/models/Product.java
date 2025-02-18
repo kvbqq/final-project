@@ -43,6 +43,11 @@ public class Product {
         return stock;
     }
 
+    @Override
+    public String toString() {
+        return String.format("%d | %s | %s | %.2f zł", id, name, type.getName(), price);
+    }
+
     public Optional<List<Configuration>> configure() {
         List<Configuration> finalConfiguration = new ArrayList<>();
 
