@@ -9,7 +9,7 @@ public enum ProductType {
 
     // isConfigurable boolean
 
-    private ProductType(String name) {
+    ProductType(String name) {
         this.name = name;
     }
 

@@ -29,8 +29,8 @@ public class ProductManager {
     }
 
     public void removeProduct(int id) {
-        Optional<Product> productToRemove = products.stream()
-                        .filter(product -> product.getId() == id).findAny();
+        Optional<Product> productToRemove = products.stream().
+                filter(product -> product.getId() == id).findAny();
 
         productToRemove.ifPresent(product -> products.remove(product));
 

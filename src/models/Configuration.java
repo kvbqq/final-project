@@ -1,10 +1,9 @@
 package models;
 
 public class Configuration {
-    // TODO id
     private final ConfigurationType type;
     private final String name;
-    private final double price; // TODO bigdecimal
+    private final double price;
 
     public Configuration(ConfigurationType type, String name, double price) {
         this.type = type;
