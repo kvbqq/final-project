@@ -7,8 +7,8 @@ public class Test {
         productManager.displayProducts();
 
         Cart cart = new Cart();
-        cart.addToCart(ProductManager.getProducts().get(0));
+//        cart.addToCart(ProductManager.getProducts().get(0));
 
-        System.out.println(cart);
+//        System.out.println(cart);
     }
 }
