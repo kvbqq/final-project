@@ -1,16 +1,18 @@
 package models;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class Cart {
     private List<Product> products = new ArrayList<>();
 
+//    class CartItem - Product product (referencja) List<Configuration> (wybrane przez użytkownika)
+
     @Override
     public String toString() {
-        return products.stream().map(Product::toString).collect(Collectors.joining("\n"));
+        return products.stream()
+                .map(Product::toString)
+                .collect(Collectors.joining("\n"));
     }
 
     public void addToCart(Product product) {

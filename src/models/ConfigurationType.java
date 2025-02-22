@@ -7,14 +7,12 @@ public enum ConfigurationType {
     BATTERY_CAPACITY("Pojemność baterii"),
     SMARTPHONE_ACCESSORY("Akcesoria");
 
-    // new enum - type of configuration (multiple/single)
-
     private final String name;
 
-    // configurationType based on enum (Single/Multiple)
+    // configurationType based on boolean (Single/Multiple)
 
 
-    ConfigurationType(String name) {
+    private ConfigurationType(String name) {
         this.name = name;
     }
 

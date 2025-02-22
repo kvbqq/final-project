@@ -1,18 +1,14 @@
 package models;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 public class Product {
     private final int id;
     private final String name;
     private final ProductType type;
-    private final double price;
-    private long stock;
+    private final double price; // TODO bigdecimal
     private final List<Configuration> configurations;
+    private final long stock;
 
     public Product(int id, String name, ProductType type, double price, long stock, List<Configuration> configurations) {
         this.id = id;
@@ -42,6 +38,8 @@ public class Product {
     public long getStock() {
         return stock;
     }
+
+    // TODO increaseStock(), decreaseStock()
 
     public List<Configuration> getConfigurations() {
         return configurations;
