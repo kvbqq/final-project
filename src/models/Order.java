@@ -39,9 +39,4 @@ public class Order {
     public double getPrice() {
         return price;
     }
-
-    @Override
-    public String toString() {
-        return String.format("%s %s | %s | %.2f zł", userName, userSurname, userAddress, price);
-    }
 }
