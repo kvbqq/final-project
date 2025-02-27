@@ -1,6 +1,7 @@
 package models;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,6 +11,7 @@ public class Order {
     private final String userAddress;
     private final List<CartItem> cartItems;
     private final BigDecimal price;
+    private final LocalDateTime date;
 
     public Order(String userName, String userSurname, String userAddress, List<CartItem> cartItems) {
         this.userName = userName;
@@ -19,6 +21,7 @@ public class Order {
         this.price = cartItems.stream()
                 .map(CartItem::getPrice)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
+        this.date = LocalDateTime.now();
     }
 
     public String getUserName() {
@@ -39,6 +42,10 @@ public class Order {
 
     public BigDecimal getPrice() {
         return price;
+    }
+
+    public LocalDateTime getDate() {
+        return date;
     }
 
     @Override
