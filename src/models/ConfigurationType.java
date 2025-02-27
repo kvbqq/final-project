@@ -1,24 +1,25 @@
 package models;
 
 public enum ConfigurationType {
-    PROCESSOR("Procesor"),
-    RAM("Pamięć RAM"),
-    COLOR("Kolor"),
-    BATTERY_CAPACITY("Pojemność baterii"),
-    SMARTPHONE_ACCESSORY("Akcesoria");
-
-    // new enum - type of configuration (multiple/single)
+    PROCESSOR("Procesor", false),
+    RAM("Pamięć RAM", false),
+    COLOR("Kolor", false),
+    BATTERY_CAPACITY("Pojemność baterii", false),
+    SMARTPHONE_ACCESSORY("Akcesoria", true);
 
     private final String name;
+    private final boolean multipleChoices;
 
-    // configurationType based on enum (Single/Multiple)
-
-
-    ConfigurationType(String name) {
+    private ConfigurationType(String name, boolean multipleChoices) {
         this.name = name;
+        this.multipleChoices = multipleChoices;
     }
 
     public String getName() {
         return name;
+    }
+
+    public boolean isMultipleChoices() {
+        return multipleChoices;
     }
 }

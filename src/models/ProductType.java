@@ -7,9 +7,7 @@ public enum ProductType {
 
     private final String name;
 
-    // isConfigurable boolean
-
-    ProductType(String name) {
+    private ProductType(String name) {
         this.name = name;
     }
 

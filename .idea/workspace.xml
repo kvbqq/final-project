@@ -4,7 +4,21 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="909218aa-174d-4aba-928f-335b006cbe23" name="Changes" comment="task-1" />
+    <list default="true" id="909218aa-174d-4aba-928f-335b006cbe23" name="Changes" comment="Revert &quot;Revert &quot;task-6&quot;&quot;&#10;&#10;This reverts commit d2d2dd3a313d26aa3d72e93976b19dad89e29731.">
+      <change afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/cli/ShopCLI.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/models/CartItem.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Test.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/Cart.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/Cart.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/Configuration.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/Configuration.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/ConfigurationType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/ConfigurationType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/Order.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/Order.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/Product.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/Product.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/ProductType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/ProductType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/OrderProcessor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/OrderProcessor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/ProductManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/ProductManager.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -87,7 +101,23 @@
       <option name="project" value="LOCAL" />
       <updated>1740138025063</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Revert &quot;Revert &quot;task-6&quot;&quot;&#10;&#10;This reverts commit d2d2dd3a313d26aa3d72e93976b19dad89e29731.">
+      <option name="closed" value="true" />
+      <created>1740243869155</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1740243869155</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Revert &quot;Revert &quot;task-6&quot;&quot;&#10;&#10;This reverts commit d2d2dd3a313d26aa3d72e93976b19dad89e29731.">
+      <option name="closed" value="true" />
+      <created>1740244201405</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1740244201405</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -106,7 +136,9 @@
     <MESSAGE value="task-3" />
     <MESSAGE value="task-5" />
     <MESSAGE value="task-1" />
-    <option name="LAST_COMMIT_MESSAGE" value="task-1" />
+    <MESSAGE value="Revert &quot;task-1&quot;&#10;&#10;This reverts commit 223a17e593e515d9731f4f50429d1bd1b5aee7b8." />
+    <MESSAGE value="Revert &quot;Revert &quot;task-6&quot;&quot;&#10;&#10;This reverts commit d2d2dd3a313d26aa3d72e93976b19dad89e29731." />
+    <option name="LAST_COMMIT_MESSAGE" value="Revert &quot;Revert &quot;task-6&quot;&quot;&#10;&#10;This reverts commit d2d2dd3a313d26aa3d72e93976b19dad89e29731." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

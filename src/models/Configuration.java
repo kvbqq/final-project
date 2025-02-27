@@ -1,14 +1,22 @@
 package models;
 
+import java.math.BigDecimal;
+
 public class Configuration {
+    private int id;
     private final ConfigurationType type;
     private final String name;
-    private final double price;
+    private final BigDecimal price;
 
-    public Configuration(ConfigurationType type, String name, double price) {
+    public Configuration(int id, ConfigurationType type, String name, BigDecimal price) {
+        this.id = id;
         this.type = type;
         this.name = name;
         this.price = price;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public ConfigurationType getType() {
@@ -19,7 +27,12 @@ public class Configuration {
         return name;
     }
 
-    public double getPrice() {
+    public BigDecimal getPrice() {
         return price;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("%d | %s | %s | %.2f zł", id, type, name, price);
     }
 }
