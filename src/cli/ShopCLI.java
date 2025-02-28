@@ -1,5 +1,7 @@
 package cli;
 
+import exceptions.ProductOutOfStockException;
+import exceptions.WrongIdException;
 import models.*;
 import services.OrderProcessor;
 import services.ProductManager;
@@ -35,22 +37,27 @@ public class ShopCLI {
                 case 4 -> System.out.println(cart);
                 case 5 -> makeOrder();
                 case 6 -> System.out.println("\nOpuszczanie sklepu...");
-                default -> System.out.println("Błędny wybór");
+                default -> System.out.println("Błędny wybór (Wprowadź cyfrę od 1 do 6)");
             }
         } while(userInput != 6);
     }
 
     private void addProductToCart() {
-        List<Configuration> finalConfiguration = new ArrayList<>();
-        List<Configuration> configurations;
-        Set<ConfigurationType> configurationTypeSet;
+        try {
+            List<Configuration> finalConfiguration = new ArrayList<>();
+            List<Configuration> configurations;
+            Set<ConfigurationType> configurationTypeSet;
 
-        System.out.println("\nPodaj id produktu:");
+            System.out.println("\nPodaj id produktu:");
+            Optional<Product> product = productManager.getProductById(scanner.nextInt());
+            scanner.nextLine();
 
-        Optional<Product> product = productManager.getProductById(scanner.nextInt());
-        scanner.nextLine();
+            if (product.isEmpty())
+                throw new WrongIdException("Brak produktu o podanym ID");
 
-        if (product.isPresent()) {
+            if (product.get().getStock() == 0)
+                throw new ProductOutOfStockException("Stan produktu wynosi 0");
+
             configurations = product.get().getConfigurations();
             configurationTypeSet = configurations.stream()
                     .map(Configuration::getType)
@@ -78,6 +85,8 @@ public class ShopCLI {
                     List<String> chosenOptions = Arrays.stream(multipleChoiceInput.split(",")).toList();
                     for (String chosenOption : chosenOptions) {
                         Optional<Configuration> chosenConfiguration = getConfigurationById(filteredConfigurations, Integer.parseInt(chosenOption.trim()));
+                        if (chosenConfiguration.isEmpty())
+                            throw new WrongIdException("Brak konfiguracji o podanym ID");
                         chosenConfiguration.ifPresent(finalConfiguration::add);
                     }
                 } else {
@@ -85,23 +94,35 @@ public class ShopCLI {
                     int singleChoiceInput = scanner.nextInt();
                     scanner.nextLine();
                     Optional<Configuration> chosenConfiguration = getConfigurationById(filteredConfigurations, singleChoiceInput);
-                    chosenConfiguration.ifPresent(finalConfiguration::add);
+                    if (chosenConfiguration.isEmpty())
+                        throw new WrongIdException("Brak konfiguracji o wybranym ID");
+                    finalConfiguration.add(chosenConfiguration.get());
                 }
             }
             cart.addToCart(new CartItem(product.get().getId(), product.get(), finalConfiguration));
+
+        } catch (ProductOutOfStockException | WrongIdException e) {
+            System.err.println("\n[Błąd] " + e.getMessage());
         }
     }
 
     private void removeProductFromCart() {
-        if (cart.getCartItems().isEmpty())
-            System.out.println("\nTwój koszyk jest pusty");
-        else {
-            System.out.println("\nTwój koszyk:\n" + cart);
-            System.out.println("\nPodaj id produktu, który chcesz usunąć");
-            Optional<CartItem> cartItemToRemove = cart.getCartItems().stream()
-                    .filter(cartItem -> cartItem.getProduct().getId() == scanner.nextInt())
-                    .findAny();
-            cartItemToRemove.ifPresent(cartItem -> cart.removeFromCart(cartItem));
+        try {
+            if (cart.getCartItems().isEmpty())
+                System.out.println("\nTwój koszyk jest pusty");
+            else {
+                System.out.println("\nTwój koszyk:\n" + cart);
+                System.out.println("\nPodaj id produktu, który chcesz usunąć");
+                Optional<CartItem> cartItemToRemove = cart.getCartItems().stream()
+                        .filter(cartItem -> cartItem.getProduct().getId() == scanner.nextInt())
+                        .findAny();
+                if (cartItemToRemove.isEmpty())
+                    throw new WrongIdException("Produkt z podanym id nie znajduje się w twoim koszyku");
+
+                cart.removeFromCart(cartItemToRemove.get());
+            }
+        } catch (WrongIdException e) {
+            System.err.println("\n[Błąd] " + e.getMessage());
         }
     }
 
