@@ -10,7 +10,7 @@ public enum ConfigurationType {
     private final String name;
     private final boolean multipleChoices;
 
-    private ConfigurationType(String name, boolean multipleChoices) {
+    ConfigurationType(String name, boolean multipleChoices) {
         this.name = name;
         this.multipleChoices = multipleChoices;
     }

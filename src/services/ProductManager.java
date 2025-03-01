@@ -5,7 +5,6 @@ import models.ConfigurationType;
 import models.Product;
 import models.ProductType;
 
-import java.io.File;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;

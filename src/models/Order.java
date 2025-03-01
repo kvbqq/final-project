@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Order {
+    private final int id;
     private final String userName;
     private final String userSurname;
     private final String userAddress;
@@ -13,13 +14,18 @@ public class Order {
     private final BigDecimal price;
     private final LocalDateTime date;
 
-    public Order(String userName, String userSurname, String userAddress, List<CartItem> cartItems) {
+    public Order(int id, String userName, String userSurname, String userAddress, List<CartItem> cartItems) {
+        this.id = id;
         this.userName = userName;
         this.userSurname = userSurname;
         this.userAddress = userAddress;
         this.cartItems = cartItems;
         this.price = calculatePrice();
         this.date = LocalDateTime.now();
+    }
+
+    public int getId() {
+        return id;
     }
 
     public String getUserName() {

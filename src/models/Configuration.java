@@ -3,7 +3,7 @@ package models;
 import java.math.BigDecimal;
 
 public class Configuration {
-    private int id;
+    private final int id;
     private final ConfigurationType type;
     private final String name;
     private final BigDecimal price;

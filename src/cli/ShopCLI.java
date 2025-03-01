@@ -6,7 +6,6 @@ import models.*;
 import services.OrderProcessor;
 import services.ProductManager;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class ShopCLI {
     ProductManager productManager = new ProductManager();
@@ -159,12 +158,12 @@ public class ShopCLI {
             System.out.println("\nPodaj nazwisko:");
             String userSurname = scanner.nextLine();
 
-            System.out.println("\nPodaj email:");
-            String userEmail = scanner.nextLine();
+            System.out.println("\nPodaj adres:");
+            String userAddress = scanner.nextLine();
 
-            Order order = new Order(userName, userSurname, userEmail, cart.getCartItems());
+            Order order = new Order(0, userName, userSurname, userAddress, cart.getCartItems());
 
-            orderProcessor.addOrder(order);
+            orderProcessor.processOrder(order);
         }
     }
 
