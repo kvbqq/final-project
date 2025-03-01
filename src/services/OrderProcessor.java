@@ -8,7 +8,6 @@ import java.util.List;
 public class OrderProcessor {
     private static List<Order> orders = new ArrayList<>();
 
-
     public void addOrder(Order order) {
         orders.add(order);
     }

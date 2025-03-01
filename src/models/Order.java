@@ -18,9 +18,7 @@ public class Order {
         this.userSurname = userSurname;
         this.userAddress = userAddress;
         this.cartItems = cartItems;
-        this.price = cartItems.stream()
-                .map(CartItem::getPrice)
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
+        this.price = calculatePrice();
         this.date = LocalDateTime.now();
     }
 
@@ -51,5 +49,11 @@ public class Order {
     @Override
     public String toString() {
         return String.format("%s %s | %s | %.2f zł", userName, userSurname, userAddress, price);
+    }
+
+    private BigDecimal calculatePrice() {
+        return cartItems.stream()
+                .map(CartItem::getPrice)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 }

@@ -14,9 +14,9 @@ public class ShopCLI {
     Cart cart = new Cart();
     Scanner scanner = new Scanner(System.in);
     public void menu() {
-        int userInput;
+        int userInput = 0;
 
-        do {
+        while(userInput != 6) {
             System.out.println("""
                      
                     Menu:
@@ -39,71 +39,94 @@ public class ShopCLI {
                 case 6 -> System.out.println("\nOpuszczanie sklepu...");
                 default -> System.out.println("Błędny wybór (Wprowadź cyfrę od 1 do 6)");
             }
-        } while(userInput != 6);
+        }
     }
-
-    private void addProductToCart() {
+    public void addProductToCart() {
         try {
-            List<Configuration> finalConfiguration = new ArrayList<>();
-            List<Configuration> configurations;
-            Set<ConfigurationType> configurationTypeSet;
-
-            System.out.println("\nPodaj id produktu:");
-            Optional<Product> product = productManager.getProductById(scanner.nextInt());
-            scanner.nextLine();
-
-            if (product.isEmpty())
-                throw new WrongIdException("Brak produktu o podanym ID");
-
-            if (product.get().getStock() == 0)
+            Product chosenProduct = getProductByIdInput();
+            if (chosenProduct.getStock() == 0) {
                 throw new ProductOutOfStockException("Stan produktu wynosi 0");
-
-            configurations = product.get().getConfigurations();
-            configurationTypeSet = configurations.stream()
-                    .map(Configuration::getType)
-                    .collect(Collectors.toSet());
-
-            for (ConfigurationType configurationType : configurationTypeSet) {
-                List<Configuration> filteredConfigurations = configurations.stream()
-                        .filter(configuration -> configuration.getType().equals(configurationType))
-                        .toList();
-
-                System.out.println("\nKonfiguracja elementu - " + configurationType.getName());
-                filteredConfigurations.stream()
-                        .map(configuration -> String.format(
-                                        "[%d] %s | Dopłata: %.2f zł",
-                                        configuration.getId(),
-                                        configuration.getName(),
-                                        configuration.getPrice()
-                                )
-                        )
-                        .forEach(System.out::println);
-
-                if (configurationType.isMultipleChoices()) {
-                    System.out.println("\nWybierz wiele dostępnych opcji:");
-                    String multipleChoiceInput = scanner.nextLine();
-                    List<String> chosenOptions = Arrays.stream(multipleChoiceInput.split(",")).toList();
-                    for (String chosenOption : chosenOptions) {
-                        Optional<Configuration> chosenConfiguration = getConfigurationById(filteredConfigurations, Integer.parseInt(chosenOption.trim()));
-                        if (chosenConfiguration.isEmpty())
-                            throw new WrongIdException("Brak konfiguracji o podanym ID");
-                        chosenConfiguration.ifPresent(finalConfiguration::add);
-                    }
-                } else {
-                    System.out.println("\nWybierz jedną z dostępnych opcji:");
-                    int singleChoiceInput = scanner.nextInt();
-                    scanner.nextLine();
-                    Optional<Configuration> chosenConfiguration = getConfigurationById(filteredConfigurations, singleChoiceInput);
-                    if (chosenConfiguration.isEmpty())
-                        throw new WrongIdException("Brak konfiguracji o wybranym ID");
-                    finalConfiguration.add(chosenConfiguration.get());
-                }
             }
-            cart.addToCart(new CartItem(product.get().getId(), product.get(), finalConfiguration));
 
-        } catch (ProductOutOfStockException | WrongIdException e) {
+            List<Configuration> chosenConfigurations = chooseConfigurations(chosenProduct);
+            cart.addToCart(new CartItem(chosenProduct.getId(), chosenProduct, chosenConfigurations));
+
+            System.out.println("\nProdukt dodany do koszyka!");
+
+        } catch (ProductOutOfStockException | WrongIdException | NumberFormatException e) {
             System.err.println("\n[Błąd] " + e.getMessage());
         }
+    }
+
+    private Product getProductByIdInput() throws WrongIdException {
+        System.out.println("\nPodaj ID produktu:");
+        Optional<Product> product = productManager.getProductById(scanner.nextInt());
+        scanner.nextLine();
+
+        if (product.isEmpty()) {
+            throw new WrongIdException("Brak produktu o podanym ID");
+        }
+        return product.get();
+    }
+
+    private List<Configuration> chooseConfigurations(Product chosenProduct) throws WrongIdException {
+        List<Configuration> chosenConfigurations = new ArrayList<>();
+        List<Configuration> possibleConfigurations = chosenProduct.getConfigurations();
+        List<ConfigurationType> configurationTypes = possibleConfigurations.stream()
+                .map(Configuration::getType)
+                .distinct()
+                .toList();
+
+        for (ConfigurationType configurationType : configurationTypes) {
+            List<Configuration> filteredConfigurations = possibleConfigurations.stream()
+                    .filter(configuration -> configuration.getType().equals(configurationType))
+                    .toList();
+
+            System.out.println("\nKonfiguracja elementu - " + configurationType.getName());
+            filteredConfigurations.stream()
+                    .map(configuration -> String.format(
+                            "[%d] %s | Dopłata: %.2f zł",
+                            configuration.getId(),
+                            configuration.getName(),
+                            configuration.getPrice()
+                    ))
+                    .forEach(System.out::println);
+
+            if (configurationType.isMultipleChoices()) {
+                chosenConfigurations.addAll(chooseMultipleConfigurations(filteredConfigurations));
+            } else {
+                chosenConfigurations.add(chooseSingleConfiguration(filteredConfigurations));
+            }
+        }
+        return chosenConfigurations;
+    }
+
+    private List<Configuration> chooseMultipleConfigurations(List<Configuration> configurations) throws WrongIdException {
+        System.out.println("\nWybierz wiele dostępnych opcji (oddzielone przecinkami):");
+        String input = scanner.nextLine();
+        List<String> chosenOptions = Arrays.stream(input.split(",")).toList();
+
+        List<Configuration> chosenConfigurations = new ArrayList<>();
+        for (String option : chosenOptions) {
+            Optional<Configuration> config = getConfigurationById(configurations, Integer.parseInt(option.trim()));
+            if (config.isEmpty()) {
+                throw new WrongIdException("Brak konfiguracji o podanym ID");
+            }
+            chosenConfigurations.add(config.get());
+        }
+        return chosenConfigurations;
+    }
+
+    private Configuration chooseSingleConfiguration(List<Configuration> possibleConfigurations) throws WrongIdException {
+        System.out.println("\nWybierz jedną z dostępnych opcji:");
+        int choice = scanner.nextInt();
+        scanner.nextLine();
+
+        Optional<Configuration> chosenConfiguration = getConfigurationById(possibleConfigurations, choice);
+        if (chosenConfiguration.isEmpty()) {
+            throw new WrongIdException("Brak konfiguracji o wybranym ID");
+        }
+        return chosenConfiguration.get();
     }
 
     private void removeProductFromCart() {

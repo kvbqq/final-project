@@ -9,9 +9,9 @@ public class Cart {
 
     @Override
     public String toString() {
-        if (cartItems.isEmpty())
-            return "Twój koszyk jest pusty";
-        return "Twój koszyk:\n" + cartItems.stream()
+        return cartItems.isEmpty()
+                ? "Twój koszyk jest pusty"
+                : "Twój koszyk:\n" + cartItems.stream()
                 .map(CartItem::toString)
                 .collect(Collectors.joining("\n"));
     }

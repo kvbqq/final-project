@@ -14,9 +14,7 @@ public class CartItem {
         this.id = id;
         this.product = product;
         this.configurations = configurations;
-        this.price = product.getPrice().add(configurations.stream()
-                .map(Configuration::getPrice)
-                .reduce(BigDecimal.ZERO, BigDecimal::add));
+        this.price = calculatePrice();
     }
 
     public int getId() {
@@ -37,18 +35,18 @@ public class CartItem {
 
     @Override
     public String toString() {
-        return String.format("""
-                %s
-                Konfiguracje:
-                %s
-                
-                Kwota całkowita: %.2f zł
-                """,
+        return String.format("%s%nKonfiguracje:%n%s%n%nKwota całkowita: %.2f zł",
                 product,
                 configurations.stream()
                         .map(Configuration::toString)
                         .collect(Collectors.joining("\n")),
                 price
                 );
+    }
+
+    private BigDecimal calculatePrice() {
+        return product.getPrice().add(configurations.stream()
+                .map(Configuration::getPrice)
+                .reduce(BigDecimal.ZERO, BigDecimal::add));
     }
 }

@@ -26,12 +26,17 @@ public class ProductManager {
         products.add(product);
     }
 
-    public void removeProduct(int id) {
+    public boolean removeProduct(int id) {
         Optional<Product> productToRemove = products.stream()
                 .filter(product -> product.getId() == id)
                 .findAny();
 
-        productToRemove.ifPresent(products::remove);
+        if (productToRemove.isPresent()) {
+            products.remove(productToRemove.get());
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public void displayProducts() {
