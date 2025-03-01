@@ -21,7 +21,7 @@ public class OrderPersistance {
                     order.getDate().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm"))
                     )
             );
-            for (CartItem cartItem : order.getCartItems()) {
+            for (CartItem cartItem : order.getCart().getCartItems()) {
                 writer.write(cartItem.getProduct().getName() + "\n");
                 if (!cartItem.getConfigurations().isEmpty()) {
                     writer.write("Konfiguracje:\n");

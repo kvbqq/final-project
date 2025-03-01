@@ -5,12 +5,15 @@ import exceptions.WrongIdException;
 import models.*;
 import services.OrderProcessor;
 import services.ProductManager;
+
+import java.math.BigDecimal;
 import java.util.*;
 
 public class ShopCLI {
     ProductManager productManager = new ProductManager();
     OrderProcessor orderProcessor = new OrderProcessor();
     Cart cart = new Cart();
+    List<Discount> discounts = List.of(new Discount("AAA", BigDecimal.valueOf(0.3)), new Discount("BBB", BigDecimal.valueOf(0.15)));
     Scanner scanner = new Scanner(System.in);
     public void menu() {
         int userInput = 0;
@@ -152,6 +155,8 @@ public class ShopCLI {
         if (cart.getCartItems().isEmpty())
             System.out.println("\nTwój koszyk jest pusty");
         else {
+            applyDiscount();
+
             System.out.println("\nPodaj imię:");
             String userName = scanner.nextLine();
 
@@ -161,7 +166,7 @@ public class ShopCLI {
             System.out.println("\nPodaj adres:");
             String userAddress = scanner.nextLine();
 
-            Order order = new Order(0, userName, userSurname, userAddress, cart.getCartItems());
+            Order order = new Order(0, userName, userSurname, userAddress, cart);
 
             orderProcessor.processOrder(order);
         }
@@ -171,5 +176,19 @@ public class ShopCLI {
         return configurations.stream()
                 .filter(c -> c.getId() == id)
                 .findAny();
+    }
+
+    private void applyDiscount() {
+        System.out.println("\nPodaj kod rabatowy: ");
+        String discountCodeInput = scanner.nextLine();
+        Optional<Discount> chosenDiscount = discounts.stream()
+                .filter(discount -> discount.getCode().equals(discountCodeInput))
+                .findAny();
+
+        if (chosenDiscount.isPresent()) {
+            cart.setDiscountPercentage(chosenDiscount.get().getPercentage());
+        } else {
+            System.err.println("[Błąd] Kod nie istnieje");
+        }
     }
 }

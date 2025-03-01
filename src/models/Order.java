@@ -10,17 +10,17 @@ public class Order {
     private final String userName;
     private final String userSurname;
     private final String userAddress;
-    private final List<CartItem> cartItems;
+    private final Cart cart;
     private final BigDecimal price;
     private final LocalDateTime date;
 
-    public Order(int id, String userName, String userSurname, String userAddress, List<CartItem> cartItems) {
+    public Order(int id, String userName, String userSurname, String userAddress, Cart cart) {
         this.id = id;
         this.userName = userName;
         this.userSurname = userSurname;
         this.userAddress = userAddress;
-        this.cartItems = cartItems;
-        this.price = calculatePrice();
+        this.cart = cart;
+        this.price = cart.getCartPrice();
         this.date = LocalDateTime.now();
     }
 
@@ -40,8 +40,8 @@ public class Order {
         return userAddress;
     }
 
-    public List<CartItem> getCartItems() {
-        return cartItems;
+    public Cart getCart() {
+        return cart;
     }
 
     public BigDecimal getPrice() {
@@ -55,11 +55,5 @@ public class Order {
     @Override
     public String toString() {
         return String.format("%s %s | %s | %.2f zł", userName, userSurname, userAddress, price);
-    }
-
-    private BigDecimal calculatePrice() {
-        return cartItems.stream()
-                .map(CartItem::getPrice)
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 }

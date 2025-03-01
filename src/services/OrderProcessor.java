@@ -24,7 +24,7 @@ public class OrderProcessor {
                     order.getUserAddress(),
                     order.getPrice())
             );
-            for (CartItem cartItem : order.getCartItems()) {
+            for (CartItem cartItem : order.getCart().getCartItems()) {
                 writer.write(String.format("%s Cena bazowa: %.2f zł%n", cartItem.getProduct().getName(), cartItem.getProduct().getPrice()));
                 if (!cartItem.getConfigurations().isEmpty()) {
                     writer.write("Konfiguracje:\n");

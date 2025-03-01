@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 public class Cart {
     private final List<CartItem> cartItems = new ArrayList<>();
+    private BigDecimal discountPercentage = BigDecimal.ZERO;
 
     @Override
     public String toString() {
@@ -24,13 +25,25 @@ public class Cart {
         cartItems.remove(cartItem);
     }
 
+    public BigDecimal getDiscountPercentage() {
+        return discountPercentage;
+    }
+
+    public void setDiscountPercentage(BigDecimal discountPercentage) {
+        this.discountPercentage = discountPercentage;
+    }
+
     public List<CartItem> getCartItems() {
         return cartItems;
     }
 
     public BigDecimal getCartPrice() {
-        return cartItems.stream()
+        BigDecimal cartItemsPrice = cartItems.stream()
                 .map(CartItem::getPrice)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+        return discountPercentage.equals(BigDecimal.ZERO)
+                ? cartItemsPrice
+                : cartItemsPrice.multiply(BigDecimal.ONE.subtract(discountPercentage));
     }
 }
