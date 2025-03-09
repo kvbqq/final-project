@@ -1,7 +1,7 @@
 package cli;
 
 import exceptions.ProductOutOfStockException;
-import exceptions.WrongIdException;
+import exceptions.ProductDoesntExistException;
 import models.*;
 import services.OrderProcessor;
 import services.ProductManager;
@@ -68,7 +68,7 @@ public class ShopCLI {
 
             System.out.println("\nProdukt dodany do koszyka!");
 
-        } catch (ProductOutOfStockException | WrongIdException | NumberFormatException e) {
+        } catch (ProductOutOfStockException | ProductDoesntExistException | NumberFormatException e) {
             System.err.println("\n[Błąd] " + e.getMessage());
         }
     }
@@ -76,15 +76,15 @@ public class ShopCLI {
     /**
      * Pobiera produkt na podstawie ID wprowadzonego przez użytkownika.
      * @return Obiekt produktu.
-     * @throws WrongIdException jeśli produkt o podanym ID nie istnieje.
+     * @throws ProductDoesntExistException jeśli produkt o podanym ID nie istnieje.
      */
-    private Product getProductByIdInput() throws WrongIdException {
+    private Product getProductByIdInput() throws ProductDoesntExistException {
         System.out.println("\nPodaj ID produktu:");
         Optional<Product> product = productManager.getProductById(scanner.nextInt());
         scanner.nextLine();
 
         if (product.isEmpty()) {
-            throw new WrongIdException("Brak produktu o podanym ID");
+            throw new ProductDoesntExistException("Brak produktu o podanym ID");
         }
         return product.get();
     }
@@ -93,9 +93,9 @@ public class ShopCLI {
      * Pozwala użytkownikowi wybrać konfiguracje dla danego produktu.
      * @param chosenProduct Produkt, dla którego wybierane są konfiguracje.
      * @return Lista wybranych konfiguracji.
-     * @throws WrongIdException jeśli podano błędne ID konfiguracji.
+     * @throws ProductDoesntExistException jeśli podano błędne ID konfiguracji.
      */
-    private List<Configuration> chooseConfigurations(Product chosenProduct) throws WrongIdException {
+    private List<Configuration> chooseConfigurations(Product chosenProduct) throws ProductDoesntExistException {
         List<Configuration> chosenConfigurations = new ArrayList<>();
         List<Configuration> possibleConfigurations = chosenProduct.getConfigurations();
         List<ConfigurationType> configurationTypes = possibleConfigurations.stream()
@@ -131,9 +131,9 @@ public class ShopCLI {
      * Pozwala użytkownikowi na wybór wielu konfiguracji dla danego produktu.
      * @param configurations Lista dostępnych konfiguracji.
      * @return Lista wybranych konfiguracji.
-     * @throws WrongIdException jeśli podano błędne ID konfiguracji.
+     * @throws ProductDoesntExistException jeśli podano błędne ID konfiguracji.
      */
-    private List<Configuration> chooseMultipleConfigurations(List<Configuration> configurations) throws WrongIdException {
+    private List<Configuration> chooseMultipleConfigurations(List<Configuration> configurations) throws ProductDoesntExistException {
         System.out.println("\nWybierz wiele dostępnych opcji (oddzielone przecinkami):");
         String input = scanner.nextLine();
         List<String> chosenOptions = Arrays.stream(input.split(",")).toList();
@@ -142,7 +142,7 @@ public class ShopCLI {
         for (String option : chosenOptions) {
             Optional<Configuration> config = getConfigurationById(configurations, Integer.parseInt(option.trim()));
             if (config.isEmpty()) {
-                throw new WrongIdException("Brak konfiguracji o podanym ID");
+                throw new ProductDoesntExistException("Brak konfiguracji o podanym ID");
             }
             chosenConfigurations.add(config.get());
         }
@@ -153,16 +153,16 @@ public class ShopCLI {
      * Pozwala użytkownikowi wybrać jedną konfigurację z listy dostępnych opcji.
      * @param possibleConfigurations Lista możliwych konfiguracji.
      * @return Wybrana konfiguracja.
-     * @throws WrongIdException jeśli podano błędne ID konfiguracji.
+     * @throws ProductDoesntExistException jeśli podano błędne ID konfiguracji.
      */
-    private Configuration chooseSingleConfiguration(List<Configuration> possibleConfigurations) throws WrongIdException {
+    private Configuration chooseSingleConfiguration(List<Configuration> possibleConfigurations) throws ProductDoesntExistException {
         System.out.println("\nWybierz jedną z dostępnych opcji:");
         int choice = scanner.nextInt();
         scanner.nextLine();
 
         Optional<Configuration> chosenConfiguration = getConfigurationById(possibleConfigurations, choice);
         if (chosenConfiguration.isEmpty()) {
-            throw new WrongIdException("Brak konfiguracji o wybranym ID");
+            throw new ProductDoesntExistException("Brak konfiguracji o wybranym ID");
         }
         return chosenConfiguration.get();
     }
@@ -172,20 +172,22 @@ public class ShopCLI {
      */
     private void removeProductFromCart() {
         try {
-            if (cart.getCartItems().isEmpty())
+            if (cart.getCartItems().isEmpty()) {
                 System.out.println("\nTwój koszyk jest pusty");
-            else {
-                System.out.println("\nTwój koszyk:\n" + cart);
-                System.out.println("\nPodaj id produktu, który chcesz usunąć");
-                Optional<CartItem> cartItemToRemove = cart.getCartItems().stream()
-                        .filter(cartItem -> cartItem.getProduct().getId() == scanner.nextInt())
-                        .findAny();
-                if (cartItemToRemove.isEmpty())
-                    throw new WrongIdException("Produkt z podanym id nie znajduje się w twoim koszyku");
-
-                cart.removeFromCart(cartItemToRemove.get());
+                return;
             }
-        } catch (WrongIdException e) {
+
+            System.out.println("\nTwój koszyk:\n" + cart);
+            System.out.println("\nPodaj id produktu, który chcesz usunąć");
+            Optional<CartItem> cartItemToRemove = cart.getCartItems().stream()
+                    .filter(cartItem -> cartItem.getProduct().getId() == scanner.nextInt())
+                    .findAny();
+            if (cartItemToRemove.isEmpty())
+                throw new ProductDoesntExistException("Produkt z podanym id nie znajduje się w twoim koszyku");
+
+            cart.removeFromCart(cartItemToRemove.get());
+
+        } catch (ProductDoesntExistException e) {
             System.err.println("\n[Błąd] " + e.getMessage());
         }
     }
