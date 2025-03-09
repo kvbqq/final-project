@@ -9,6 +9,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Klasa odpowiedzialna za przetwarzanie zamówień, w tym zapis i generowanie faktur.
+ */
 public class OrderProcessor {
     public void processOrder(Order order) {
         OrderPersistance.saveOrderToFile(order);

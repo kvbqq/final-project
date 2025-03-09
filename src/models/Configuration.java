@@ -2,6 +2,9 @@ package models;
 
 import java.math.BigDecimal;
 
+/**
+ * Klasa reprezentująca konfigurację produktu.
+ */
 public class Configuration {
     private final int id;
     private final ConfigurationType type;

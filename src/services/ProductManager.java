@@ -10,6 +10,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Klasa zarządzająca produktami w systemie.
+ * Pozwala na ich dodawanie, usuwanie oraz wyświetlanie.
+ */
 public class ProductManager {
     private final static List<Product> products = new ArrayList<>();
 

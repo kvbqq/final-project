@@ -9,12 +9,20 @@ import services.ProductManager;
 import java.math.BigDecimal;
 import java.util.*;
 
+/**
+ * Klasa obsługująca interfejs wiersza poleceń sklepu.
+ * Pozwala użytkownikowi na interakcję z systemem zakupowym.
+ */
 public class ShopCLI {
     ProductManager productManager = new ProductManager();
     OrderProcessor orderProcessor = new OrderProcessor();
     Cart cart = new Cart();
     List<Discount> discounts = List.of(new Discount("AAA", BigDecimal.valueOf(0.3)), new Discount("BBB", BigDecimal.valueOf(0.15)));
     Scanner scanner = new Scanner(System.in);
+
+    /**
+     * Wyświetla menu główne aplikacji i obsługuje interakcję z użytkownikiem.
+     */
     public void menu() {
         int userInput = 0;
 
@@ -43,7 +51,12 @@ public class ShopCLI {
             }
         }
     }
-    public void addProductToCart() {
+
+    /**
+     * Dodaje produkt do koszyka po wyborze użytkownika.
+     * Obsługuje wybór konfiguracji oraz sprawdza dostępność produktu.
+     */
+    private void addProductToCart() {
         try {
             Product chosenProduct = getProductByIdInput();
             if (chosenProduct.getStock() == 0) {
@@ -60,6 +73,11 @@ public class ShopCLI {
         }
     }
 
+    /**
+     * Pobiera produkt na podstawie ID wprowadzonego przez użytkownika.
+     * @return Obiekt produktu.
+     * @throws WrongIdException jeśli produkt o podanym ID nie istnieje.
+     */
     private Product getProductByIdInput() throws WrongIdException {
         System.out.println("\nPodaj ID produktu:");
         Optional<Product> product = productManager.getProductById(scanner.nextInt());
@@ -71,6 +89,12 @@ public class ShopCLI {
         return product.get();
     }
 
+    /**
+     * Pozwala użytkownikowi wybrać konfiguracje dla danego produktu.
+     * @param chosenProduct Produkt, dla którego wybierane są konfiguracje.
+     * @return Lista wybranych konfiguracji.
+     * @throws WrongIdException jeśli podano błędne ID konfiguracji.
+     */
     private List<Configuration> chooseConfigurations(Product chosenProduct) throws WrongIdException {
         List<Configuration> chosenConfigurations = new ArrayList<>();
         List<Configuration> possibleConfigurations = chosenProduct.getConfigurations();
@@ -103,6 +127,12 @@ public class ShopCLI {
         return chosenConfigurations;
     }
 
+    /**
+     * Pozwala użytkownikowi na wybór wielu konfiguracji dla danego produktu.
+     * @param configurations Lista dostępnych konfiguracji.
+     * @return Lista wybranych konfiguracji.
+     * @throws WrongIdException jeśli podano błędne ID konfiguracji.
+     */
     private List<Configuration> chooseMultipleConfigurations(List<Configuration> configurations) throws WrongIdException {
         System.out.println("\nWybierz wiele dostępnych opcji (oddzielone przecinkami):");
         String input = scanner.nextLine();
@@ -119,6 +149,12 @@ public class ShopCLI {
         return chosenConfigurations;
     }
 
+    /**
+     * Pozwala użytkownikowi wybrać jedną konfigurację z listy dostępnych opcji.
+     * @param possibleConfigurations Lista możliwych konfiguracji.
+     * @return Wybrana konfiguracja.
+     * @throws WrongIdException jeśli podano błędne ID konfiguracji.
+     */
     private Configuration chooseSingleConfiguration(List<Configuration> possibleConfigurations) throws WrongIdException {
         System.out.println("\nWybierz jedną z dostępnych opcji:");
         int choice = scanner.nextInt();
@@ -131,6 +167,9 @@ public class ShopCLI {
         return chosenConfiguration.get();
     }
 
+    /**
+     * Usuwa produkt z koszyka na podstawie ID wprowadzonego przez użytkownika.
+     */
     private void removeProductFromCart() {
         try {
             if (cart.getCartItems().isEmpty())
@@ -151,6 +190,10 @@ public class ShopCLI {
         }
     }
 
+    /**
+     * Tworzy zamówienie na podstawie produktów w koszyku.
+     * Pobiera dane użytkownika oraz stosuje ewentualny rabat.
+     */
     private void makeOrder() {
         if (cart.getCartItems().isEmpty())
             System.out.println("\nTwój koszyk jest pusty");
@@ -172,12 +215,22 @@ public class ShopCLI {
         }
     }
 
+    /**
+     * Pobiera konfigurację na podstawie ID.
+     * @param configurations Lista dostępnych konfiguracji.
+     * @param id ID konfiguracji.
+     * @return Opcjonalna konfiguracja, jeśli istnieje.
+     */
     private Optional<Configuration> getConfigurationById(List<Configuration> configurations, int id) {
         return configurations.stream()
                 .filter(c -> c.getId() == id)
                 .findAny();
     }
 
+    /**
+     * Stosuje kod rabatowy podany przez użytkownika.
+     * Jeśli kod jest niepoprawny, informuje o błędzie.
+     */
     private void applyDiscount() {
         System.out.println("\nPodaj kod rabatowy: ");
         String discountCodeInput = scanner.nextLine();

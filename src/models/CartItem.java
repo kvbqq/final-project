@@ -4,6 +4,10 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Klasa reprezentująca pojedynczą pozycję w koszyku.
+ * Zawiera produkt oraz jego konfigurację.
+ */
 public class CartItem {
     private final int id;
     private final Product product;

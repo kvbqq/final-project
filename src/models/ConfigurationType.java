@@ -1,5 +1,9 @@
 package models;
 
+/**
+ * Enum definiujący różne typy konfiguracji produktów.
+ * Określa, czy można wybrać wiele opcji konfiguracji.
+ */
 public enum ConfigurationType {
     PROCESSOR("Procesor", false),
     RAM("Pamięć RAM", false),

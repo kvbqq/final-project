@@ -5,6 +5,10 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Klasa reprezentująca zamówienie użytkownika.
+ * Przechowuje informacje o użytkowniku, koszyku oraz dacie zamówienia.
+ */
 public class Order {
     private final int id;
     private final String userName;

@@ -8,6 +8,9 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.time.format.DateTimeFormatter;
 
+/**
+ * Klasa odpowiedzialna za zapis zamówień do pliku tekstowego.
+ */
 public class OrderPersistance {
     private static final String FILE_NAME = "orders.txt";
 

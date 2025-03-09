@@ -3,6 +3,10 @@ package models;
 import java.math.BigDecimal;
 import java.util.List;
 
+/**
+ * Klasa reprezentująca produkt dostępny w sklepie.
+ * Zawiera informacje o nazwie, cenie, typie oraz konfiguracjach.
+ */
 public class Product {
     private final int id;
     private final String name;
