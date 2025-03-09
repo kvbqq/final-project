@@ -1,9 +1,7 @@
 package models;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.time.ZonedDateTime;
 
 /**
  * Klasa reprezentująca zamówienie użytkownika.
@@ -16,7 +14,7 @@ public class Order {
     private final String userAddress;
     private final Cart cart;
     private final BigDecimal price;
-    private final LocalDateTime date;
+    private final ZonedDateTime date;
 
     public Order(int id, String userName, String userSurname, String userAddress, Cart cart) {
         this.id = id;
@@ -25,7 +23,7 @@ public class Order {
         this.userAddress = userAddress;
         this.cart = cart;
         this.price = cart.getCartPrice();
-        this.date = LocalDateTime.now();
+        this.date = ZonedDateTime.now();
     }
 
     public int getId() {
@@ -52,7 +50,7 @@ public class Order {
         return price;
     }
 
-    public LocalDateTime getDate() {
+    public ZonedDateTime getDate() {
         return date;
     }
 

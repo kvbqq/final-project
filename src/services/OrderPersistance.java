@@ -21,7 +21,7 @@ public class OrderPersistance {
                     order.getId(),
                     order.getUserName() + " " + order.getUserSurname(),
                     order.getUserAddress(),
-                    order.getDate().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm"))
+                    order.getDate().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm z"))
                     )
             );
             for (CartItem cartItem : order.getCart().getCartItems()) {
